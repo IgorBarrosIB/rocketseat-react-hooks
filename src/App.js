@@ -2,17 +2,17 @@ import React, {useState, useEffect}  from "react";
 
 export default function App(){
 
-  const [repositories, setRepositores] = useState([
-    {id: 1, name: 'repo-1'},
-    {id: 2, name: 'repo-2'},
-    {id: 3, name: 'repo-3'},
-  ]);
+  const [repositories, setRepositores] = useState([ ]);
 
-  function handleAddRepositories(){
-    setRepositores([...repositories, {id: Math.random(), name: "novo repo"}])
-  }
+  useEffect(() => {
+    async function github(){
+      const response = await fetch('https://api.github.com/users/IgorBarrosIB/repos');
+      const data = await response.json();
 
-  console.log()
+      setRepositores(data);
+    }
+    github();
+  }, []);
   
   return(
     <>
@@ -21,7 +21,6 @@ export default function App(){
          <li key={repo.id}> {repo.name}</li>
        ))}
      </ul>
-     <button onClick={handleAddRepositories}> Adicionar repositório </button>
     </>
   );
 }
